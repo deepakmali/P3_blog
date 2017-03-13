@@ -3,10 +3,23 @@ import webapp2
 import jinja2
 import data_model
 import re
+import hmac
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), 
                                autoescape = True)
+
+
+SECRET_KEY = "aghkZXZ#Tm9u5ZXZ1Bvc3RzG!CAgICAgMA"
+
+
+# create hash to set in cookie
+def create_cookie_hash(username):
+    return '%s|%s' %(username, hmac.new(SECRET_KEY, username).hexdigest())
+
+def validate_cookie_hash(user_hash):
+    username = user_hash.split('|')[0]
+    return user_hash == create_cookie_hash(username = username)
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
@@ -32,6 +45,7 @@ class BlogHome(Handler):
 class NewPost(Handler):
     def get(self):
         self.render("NewPost.html")
+    # Add code to save the post
         
 
 class Signup(Handler):
@@ -82,6 +96,9 @@ class Signup(Handler):
                                          email = email)
             #self.redirect('/blog/welcome')
 
+class Login(Handler):
+    def get(self):
+        self.render("login.html")
 
 
 app = webapp2.WSGIApplication([
@@ -89,5 +106,6 @@ app = webapp2.WSGIApplication([
                               ( '/blog', BlogHome),
                               ( '/blog/newpost', NewPost),
                               ( '/blog/signup', Signup),
+                              ( '/blog/login', Login),
                               ] , 
                               debug = True)
