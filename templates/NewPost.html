@@ -1,0 +1,40 @@
+{% extends "BasePage.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-center text-upper">
+        <h1>Create a new post:</h1>        
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+            <form method="post" style="margin: 0, auto;">
+                <table>
+                    <tr>
+                        <td>
+                            Subject:    
+                        </td>
+                        <td>
+                            <input type="text" name="subject" value="{{subject}}">
+                        </td>
+                        <td>
+                            {{subject_error}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Content:            
+                        </td>
+                        <td>
+                            <textarea name="content">{{content}}</textarea>
+                        </td>
+                        <td>
+                            {{content_error}}
+                        </td>
+                    </tr>
+                </table>
+                <input type="submit" name="Create Post">
+            </form>       
+    </div>
+</div>
+
+{% endblock %}

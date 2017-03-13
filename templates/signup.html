@@ -1,0 +1,58 @@
+{% extends "BasePage.html" %}
+{% block content %}
+<div class="row">
+	<div class="col-md-12">
+		<form method="post">
+		<table>
+			<tr>
+				<td>
+					<label>Username : </label>
+				</td>
+				<td>
+					<input type="text" name="username" value="{{ username }}">
+				</td>
+				<td>
+					{{ username_error }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Password : </label>
+				</td>
+				<td>
+					<input type="Password" name="password">
+				</td>
+				<td>
+					{{ password_error }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Verify : </label>
+				</td>
+				<td>
+					<input type="Password" name="verify">
+				</td>
+				<td>
+					{{ verify_error }}
+				</td>
+			</tr>
+			<tr>
+			<td>
+				<label>Email : </label>
+			</td>
+			<td>
+				<input type="text" name="email" value="{{ email }}">
+			</td>
+			<td>
+				{{ email_error }}
+			</td>
+		</tr>
+		</table>
+		<h4> {{ user_exists_error }}</h4>
+		<input type="submit" name="Create">
+	</form>	
+	</div>
+</div>
+	
+{% endblock %}

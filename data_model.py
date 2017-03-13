@@ -1,0 +1,83 @@
+import os
+from string import letters
+import random
+import hashlib
+from google.appengine.ext import db
+
+
+# methods of hashing
+def make_salt():
+    return ''.join(random.choice(letters) for x in range(5))
+
+def make_pw_hash(username, password, salt = None):
+    if not salt:
+        salt = make_salt()
+    return '%s|%s' %(salt, 
+                     hashlib.sha256(username + password + salt).hexdigest())
+
+def valid_password(username, password, password_hash):
+    salt = password_hash.split('|')[0]
+    return password_hash == make_pw_hash(username, password, salt)
+
+# To store user details.
+class User(db.Model):
+    username = db.StringProperty(required = True)
+    password_hash = db.StringProperty(required = True)
+    email = db.StringProperty()
+    created = db.DateTimeProperty(auto_now_add = True)
+
+    # class method to search a user by username
+    @classmethod 
+    def get_by_name(cls, user):
+        return cls.all().filter('username = ', user).get()
+
+    # class method to search user by id
+    @classmethod
+    def get_by_id(cls, userId):
+        return cls.get_by_id(userId)
+
+    # method to hash password and return user object
+    @classmethod
+    def register(cls, username, password, email = None):
+        pw_hash = make_pw_hash(username=username ,password=password)
+        return cls(username = username,
+                   password_hash = pw_hash,
+                   email = email).put()
+
+    # Method to return user object if login credentials are valid.
+    @classmethod
+    def login(cls, username, password):
+        user = cls.get_by_name(user = username)
+        if user and valid_password(username, password, user.password_hash):
+            return user
+
+# To store blog posts
+class BlogPosts(db.Model):
+    title = db.StringProperty(required = True)
+    content = db.TextProperty(required = True)
+    created = db.DateTimeProperty(auto_now_add = True)
+    created_by = db.ReferenceProperty(User)
+    # total_likes = db.IntegerProperty(default = 0)
+    # total_comments = db.IntegerProperty(default = 0)
+
+    # method to return most recent 10 posts
+    @classmethod
+    def recent_ten(cls):
+        return cls.all().order('-created').fetch(10)
+
+    @classmethod
+    def update_post(cls, post):
+        # Add code to update the post.
+        pass
+
+class Comments(db.Model):
+    post = db.ReferenceProperty(BlogPosts)
+    user = db.ReferenceProperty(User)
+    comment_text = db.TextProperty(required=True)
+
+    # @classmethod
+    # def get_c
+
+class Likes(db.Model):
+    post = db.ReferenceProperty(BlogPosts)
+    user = db.ReferenceProperty(User)
