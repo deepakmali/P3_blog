@@ -14,8 +14,8 @@ SECRET_KEY = "aghkZXZ#Tm9u5ZXZ1Bvc3RzG!CAgICAgMA"
 
 
 # create hash to set in cookie
-def create_cookie_hash(username):
-    return '%s|%s' %(username, hmac.new(SECRET_KEY, username).hexdigest())
+def create_cookie_hash(userid):
+    return '%s|%s' %(userid, hmac.new(SECRET_KEY, userid).hexdigest())
 
 def validate_cookie_hash(user_hash):
     username = user_hash.split('|')[0]
@@ -94,7 +94,7 @@ class Signup(Handler):
                 data_model.User.register(username = username,
                                          password = password,
                                          email = email)
-            #self.redirect('/blog/welcome')
+            self.redirect('/blog/login')
 
 class Login(Handler):
     def get(self):
@@ -112,11 +112,20 @@ class Login(Handler):
                               password = password
                               )
             if name :
-                self.write('hello' + name.username )
+                # self.write('hello' + name.username )
+                # Set cookie for the user.
+                cookie_val = create_cookie_hash(str(name.key().id()))
+                self.response.headers.add_header('Set-Cookie',
+                                                '%s=%s' %('user-id', cookie_val))
+                self.write(cookie_val)
+                self.redirect('/blog/mypage')
+
             else:
                 self.render("login.html",
                             empty_password="Password is incorrect.")
 
+class MyPage(Handler):
+    pass
 
 
 
@@ -126,5 +135,6 @@ app = webapp2.WSGIApplication([
                               ( '/blog/newpost', NewPost),
                               ( '/blog/signup', Signup),
                               ( '/blog/login', Login),
+                              ( '/blog/mypage', MyPage),
                               ] , 
                               debug = True)
