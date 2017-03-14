@@ -100,6 +100,25 @@ class Login(Handler):
     def get(self):
         self.render("login.html")
 
+    def post(self):
+        username = self.request.get('username')
+        password = self.request.get('password')
+        if not username:
+            self.render("login.html", empty_username = "Username can not be empty")
+        elif not password:
+            self.render("login.html", empty_password = "Password can not be empty")
+        else:
+            name = data_model.User.login(username = username,
+                              password = password
+                              )
+            if name :
+                self.write('hello' + name.username )
+            else:
+                self.render("login.html",
+                            empty_password="Password is incorrect.")
+
+
+
 
 app = webapp2.WSGIApplication([
                               ( '/', MainPage),
