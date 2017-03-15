@@ -6,35 +6,21 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12">
-            <form method="post" style="margin: 0, auto;">
-                <table>
-                    <tr>
-                        <td>
-                            Subject:    
-                        </td>
-                        <td>
-                            <input type="text" name="subject" value="{{subject}}">
-                        </td>
-                        <td>
-                            {{subject_error}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Content:            
-                        </td>
-                        <td>
-                            <textarea name="content">{{content}}</textarea>
-                        </td>
-                        <td>
-                            {{content_error}}
-                        </td>
-                    </tr>
-                </table>
-                <input type="submit" name="Create Post">
-            </form>       
+<form method="post">
+    <div class="form-group">
+        <label for="subj">Subject:</label>
+        <input class="form-control" type="text" name="subject" value="{{subject}}" id="subj">
+        <p>{{subject_error}}</p>
     </div>
+    <div class="form-group">
+        <label for="cont">Content:</label>
+        <textarea class="form-control" name="content" id="cont" style="height: 200px;">{{content}}</textarea>
+        <p>{{content_error}}</p>
+    </div>
+    <div class="form-group">
+        <input class="btn btn-default" type="submit" name="Create Post">    
+    </div>
+</form>       
 </div>
 
 {% endblock %}

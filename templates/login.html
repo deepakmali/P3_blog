@@ -1,35 +1,21 @@
 {% extends "BasePage.html" %}
 {% block content %}
 <div class="row">
-	<div class="col-md-12">
-		<form method="post" class="centerBlock">
-			<table>
-				<tr>
-					<td>
-						<label>Username: </label>	
-					</td>
-					<td>
-						<input type="text" name="username" placeholder="Enter your username here">
-					</td>
-					<td>
-						<label>{{ empty_username }}</label>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label>Password: </label>
-					</td>
-					<td>
-						<input type="Password" name="password" placeholder="Enter your password here">
-					</td>
-					<td>
-						<label>{{ empty_password }}</label>
-					</td>
-				</tr>
-			</table>
-			<input type="submit" name="submit">
-		</form>
-	</div>
+	<form method="post">
+		<div class="form-group">
+			<label for="userN">Username: </label>
+			<input class="form-control" type="text" name="username" placeholder="Enter your username here" id="userN">
+			<label>{{ empty_username }}</label>
+		</div>
+		<div class="form-group">
+			<label for="pswrd">Password: </label>
+			<input class="form-control" type="Password" name="password" placeholder="Enter your password here" id="pswrd">
+			<label>{{ empty_password }}</label>
+		</div>
+		<div class="form-group">
+			<input class="btn btn-default" type="submit" name="submit">
+		</div>
+	</form>
 </div>
 <div class="row">
 	<div class="col-md-12">
