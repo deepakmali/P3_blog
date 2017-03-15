@@ -18,8 +18,9 @@ def create_cookie_hash(userid):
     return '%s|%s' %(userid, hmac.new(SECRET_KEY, userid).hexdigest())
 
 def validate_cookie_hash(user_hash):
-    username = user_hash.split('|')[0]
-    return user_hash == create_cookie_hash(username = username)
+    userid = user_hash.split('|')[0]
+    if user_hash == create_cookie_hash(userid = userid):
+        return userid
 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
@@ -31,6 +32,12 @@ class Handler(webapp2.RequestHandler):
 
     def render(self, template, **kw):
         self.write((self.render_str(template, **kw)))
+
+    def loggedUser(self, user_hash):
+        userid = validate_cookie_hash(user_hash)
+        # return userid
+        if userid :
+            return data_model.User.get_user_by_id(int(userid)).key().id()
 
 
 
@@ -50,7 +57,10 @@ class NewPost(Handler):
 
 class Signup(Handler):
     def get(self):
-        self.render("signup.html")
+        user_hash = str(self.request.cookies.get('userid'))
+        userid = self.loggedUser(user_hash = user_hash)
+        self.write(userid)
+        # self.render("signup.html")
 
     def post(self):
         username = self.request.get('username')
@@ -116,7 +126,7 @@ class Login(Handler):
                 # Set cookie for the user.
                 cookie_val = create_cookie_hash(str(name.key().id()))
                 self.response.headers.add_header('Set-Cookie',
-                                                '%s=%s' %('user-id', cookie_val))
+                                                '%s=%s' %('userid', cookie_val))
                 self.write(cookie_val)
                 self.redirect('/blog/mypage')
 
