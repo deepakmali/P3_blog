@@ -33,7 +33,8 @@ class Handler(webapp2.RequestHandler):
     def render(self, template, **kw):
         self.write((self.render_str(template, **kw)))
 
-    def loggedUser(self, user_hash):
+    def loggedUser(self):
+        user_hash = str(self.request.cookies.get('userid'))
         userid = validate_cookie_hash(user_hash)
         # return userid
         if userid :
@@ -53,14 +54,36 @@ class NewPost(Handler):
     def get(self):
         self.render("NewPost.html")
     # Add code to save the post
-        
+    def post(self):
+        subject = self.request.get('subject')
+        content = self.request.get('content')
+        subject_error = ''
+        content_error = ''
+        if not subject:
+            subject_error = "Subject can not be empty!!!"
+        if not content:
+            content_error = "Content can not be empty!!!"
+        if subject and content :
+            #self.write('Thank you')
+            new_entry = BlogData(subject=subject,content=content)
+            key = new_entry.put()
+            # Add to redirect to permalink this blog
+            self.redirect('/blog/' + str(key.id()))
+        else:
+            self.render("NewPost.html", 
+                        subject=subject, 
+                        content=content, 
+                        subject_error=subject_error, 
+                        content_error=content_error)
+
 
 class Signup(Handler):
     def get(self):
-        user_hash = str(self.request.cookies.get('userid'))
-        userid = self.loggedUser(user_hash = user_hash)
-        self.write(userid)
-        # self.render("signup.html")
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            self.redirect('/blog/mypage')
 
     def post(self):
         username = self.request.get('username')
@@ -108,7 +131,12 @@ class Signup(Handler):
 
 class Login(Handler):
     def get(self):
-        self.render("login.html")
+        userid = self.loggedUser()
+        if not userid:
+            self.render("login.html")
+        else:
+            self.redirect('/blog/mypage')
+        
 
     def post(self):
         username = self.request.get('username')
