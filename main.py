@@ -48,33 +48,45 @@ class MainPage(Handler):
 
 class BlogHome(Handler):
     def get(self):
-        self.render("Home.html")
+        self.render("Home.html", 
+                    posts = data_model.BlogPosts.recent_ten()
+                    )
 
 class NewPost(Handler):
     def get(self):
-        self.render("NewPost.html")
+        userid = self.loggedUser()
+        if not userid:
+            self.redirect("/blog/signup")
+        else:
+            self.render("NewPost.html")
     # Add code to save the post
     def post(self):
-        subject = self.request.get('subject')
-        content = self.request.get('content')
-        subject_error = ''
-        content_error = ''
-        if not subject:
-            subject_error = "Subject can not be empty!!!"
-        if not content:
-            content_error = "Content can not be empty!!!"
-        if subject and content :
-            #self.write('Thank you')
-            new_entry = BlogData(subject=subject,content=content)
-            key = new_entry.put()
-            # Add to redirect to permalink this blog
-            self.redirect('/blog/' + str(key.id()))
+        userid = self.loggedUser()
+        if not userid:
+            self.redirect("/blog/signup")
         else:
-            self.render("NewPost.html", 
-                        subject=subject, 
-                        content=content, 
-                        subject_error=subject_error, 
-                        content_error=content_error)
+            subject = self.request.get('subject')
+            content = self.request.get('content')
+            subject_error = ''
+            content_error = ''
+            if not subject:
+                subject_error = "Subject can not be empty!!!"
+            if not content:
+                content_error = "Content can not be empty!!!"
+            if subject and content :
+                #self.write('Thank you')
+                new_entry = data_model.BlogPosts(subject=subject,
+                                     content=content,
+                        created_by=data_model.User.get_user_by_id(int(userid)))
+                key = new_entry.put()
+                # Add to redirect to permalink this blog
+                # self.redirect('/blog/' + str(key.id()))
+            else:
+                self.render("NewPost.html", 
+                            subject=subject, 
+                            content=content, 
+                            subject_error=subject_error, 
+                            content_error=content_error)
 
 
 class Signup(Handler):
@@ -163,7 +175,8 @@ class Login(Handler):
                             empty_password="Password is incorrect.")
 
 class MyPage(Handler):
-    pass
+    def get():
+        pass
 
 
 
