@@ -10,14 +10,19 @@
 	<div class="col-md-9">
 		<h2>{{post.subject}}</h2>
 	</div>
-	<div class="col-md-3">
-		<p style="margin-bottom: 0;">{{post.created}}</p>
+	<div class="col-md-3 , text-right text-bottom">
+		<p>{{post.created}}</p>
 	</div>
 </div>
 <div class="row"><div class="col-md-12"><hr></div></div>
 <div class="row">
 	<div class="col-md-12">
 		<p>{{post.content}}</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12 text-right">
+		<p>By : post.created_by.username</p>
 	</div>
 </div>
 {% endfor %}
