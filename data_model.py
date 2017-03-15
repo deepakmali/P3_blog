@@ -33,7 +33,7 @@ class User(db.Model):
 
     # class method to search user by id
     @classmethod
-    def get_by_id(cls, userId):
+    def get_user_by_id(cls, userId):
         return cls.get_by_id(userId)
 
     # method to hash password and return user object
