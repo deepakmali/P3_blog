@@ -70,6 +70,10 @@ class BlogPosts(db.Model):
         # Add code to update the post.
         pass
 
+    @classmethod
+    def user_posts(cls, user):
+        return cls.all().filter('created_by =', user)
+
 class Comments(db.Model):
     post = db.ReferenceProperty(BlogPosts)
     user = db.ReferenceProperty(User)

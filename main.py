@@ -175,8 +175,16 @@ class Login(Handler):
                             empty_password="Password is incorrect.")
 
 class MyPage(Handler):
-    def get():
-        pass
+    def get(self):
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            user = data_model.User.get_user_by_id(int(userid))
+            posts = data_model.BlogPosts.user_posts(user = user)
+            self.render("mypage.html", 
+                    posts = posts
+                    )
 
 
 
