@@ -20,10 +20,10 @@
 		<p>{{post.content}}</p>
 	</div>
 </div>
-<!-- <div class="row">
-	<div class="col-md-12 text-right">
-		<p>By : {{post.created_by.username}}</p>
+<div class="row">
+	<div class="col-md-12 text-left">
+		<p><a href="/blog/{{post.key().id()}}">Edit</a></p>
 	</div>
-</div> -->
+</div>
 {% endfor %}
 {% endblock %}

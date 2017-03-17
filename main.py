@@ -186,7 +186,9 @@ class MyPage(Handler):
                     posts = posts
                     )
 
-
+class EditPost(Handler):
+    def get(self, postId):
+        self.write(postId)
 
 app = webapp2.WSGIApplication([
                               ( '/', MainPage),
@@ -195,5 +197,6 @@ app = webapp2.WSGIApplication([
                               ( '/blog/signup', Signup),
                               ( '/blog/login', Login),
                               ( '/blog/mypage', MyPage),
+                              ( r'/blog/(\d+)', EditPost)
                               ] , 
                               debug = True)
