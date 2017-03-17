@@ -66,9 +66,8 @@ class BlogPosts(db.Model):
         return cls.all().order('-created').fetch(10)
 
     @classmethod
-    def update_post(cls, post):
-        # Add code to update the post.
-        pass
+    def get_post(cls, postId):
+        return cls.get_by_id(int(postId))
 
     @classmethod
     def user_posts(cls, user):

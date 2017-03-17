@@ -188,7 +188,25 @@ class MyPage(Handler):
 
 class EditPost(Handler):
     def get(self, postId):
-        self.write(postId)
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            post = data_model.BlogPosts.get_post(postId = int(postId))
+            self.render("NewPost.html",
+                        subject = post.subject,
+                        content = post.content)
+
+    def post(self, postId):
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            post = data_model.BlogPosts.get_post(postId = int(postId))
+            post.subject = self.request.get('subject')
+            post.content = self.request.get('content')
+            post.put()
+            self.redirect('/blog/mypage')
 
 app = webapp2.WSGIApplication([
                               ( '/', MainPage),
