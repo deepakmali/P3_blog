@@ -4,6 +4,7 @@ import jinja2
 import data_model
 import re
 import hmac
+import time
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), 
@@ -166,7 +167,7 @@ class Login(Handler):
                 # Set cookie for the user.
                 cookie_val = create_cookie_hash(str(name.key().id()))
                 self.response.headers.add_header('Set-Cookie',
-                                                '%s=%s' %('userid', cookie_val))
+                                                '%s=%s; Path=/' %('userid', cookie_val))
                 self.write(cookie_val)
                 self.redirect('/blog/mypage')
 
@@ -208,6 +209,17 @@ class EditPost(Handler):
             post.put()
             self.redirect('/blog/mypage')
 
+class Logout(Handler):
+    def get(self):
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            self.response.headers.add_header('Set-Cookie', 'userid=; Path=/')
+            self.render("logout.html")
+            #time.sleep(5)
+            #self.redirect('/blog/login')
+
 app = webapp2.WSGIApplication([
                               ( '/', MainPage),
                               ( '/blog', BlogHome),
@@ -215,6 +227,7 @@ app = webapp2.WSGIApplication([
                               ( '/blog/signup', Signup),
                               ( '/blog/login', Login),
                               ( '/blog/mypage', MyPage),
-                              ( r'/blog/mypage/(\d+)', EditPost)
+                              ( r'/blog/mypage/(\d+)', EditPost),
+                              ( '/blog/logout', Logout),
                               ] , 
                               debug = True)
