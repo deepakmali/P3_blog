@@ -57,8 +57,8 @@ class BlogPosts(db.Model):
     content = db.TextProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
     created_by = db.ReferenceProperty(User)
-    # total_likes = db.IntegerProperty(default = 0)
-    # total_comments = db.IntegerProperty(default = 0)
+    total_likes = db.IntegerProperty(default = 0)
+    total_comments = db.IntegerProperty(default = 0)
 
     # method to return most recent 10 posts
     @classmethod
@@ -73,14 +73,36 @@ class BlogPosts(db.Model):
     def user_posts(cls, user):
         return cls.all().filter('created_by =', user)
 
+    @classmethod
+    def increment_comment_count(cls):
+        cls.total_comments += 1
+        cls.put()
+
+    @classmethod
+    def increment_like_count(cls):
+        cls.total_likes += 1
+        cls.put()
+
 class Comments(db.Model):
     post = db.ReferenceProperty(BlogPosts)
     user = db.ReferenceProperty(User)
     comment_text = db.TextProperty(required=True)
 
-    # @classmethod
-    # def get_c
+    @classmethod
+    def get_post_comments(cls, post):
+        if post and user :
+            return cls.all().filter('post =', post)
 
+    @classmethod
+    def put_post_comments(cls, post, user, comment_text):
+        if post and user and comment_text:
+            obj = Comments(post = post,
+                           user = user,
+                           comment_text = comment_text)
+            obj.put()
+            post.increment_comment_count()
+        
 class Likes(db.Model):
     post = db.ReferenceProperty(BlogPosts)
     user = db.ReferenceProperty(User)
+
