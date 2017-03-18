@@ -21,7 +21,16 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-12 text-right">
+	<div class="col-md-3">
+		<p>Likes({{post.total_likes}})</p>
+<!-- 		<p><button type="button" class="btn btn-default" aria-label="Left Align">
+  	<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+</button> ({{post.total_likes}})</p> -->
+	</div>
+	<div class="col-md-3">
+		<p>Comments({{post.total_comments}})</p>
+	</div>
+	<div class="col-md-6 text-right">
 		<p>By : {{post.created_by.username}}</p>
 	</div>
 </div>
