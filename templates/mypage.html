@@ -21,8 +21,26 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-12 text-left">
+	<div class="col-md-1 text-left">
 		<p><a href="/blog/mypage/{{post.key().id()}}">Edit</a></p>
+	</div>
+	<div class="col-md-1">
+		<!-- <p>Likes({{post.total_likes}})</p> -->
+		<p>
+		<a href="/blog/like-{{post.key().id()}}">
+ 		 	<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+			({{post.total_likes}})
+		</p></a>
+	</div>
+	<div class="col-md-1">
+		<p>
+		<a href="/blog/comment-{{post.key().id()}}">
+		<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+		({{post.total_comments}})
+		</p></a>
+	</div>
+	<div class="col-md-10 text-right">
+		<p>By : {{post.created_by.username}}</p>
 	</div>
 </div>
 {% endfor %}

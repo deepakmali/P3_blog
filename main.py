@@ -52,9 +52,13 @@ class MainPage(Handler):
 # Display 10 most recent posts.
 class BlogHome(Handler):
     def get(self):
-        self.render("Home.html", 
-                    posts = data_model.BlogPosts.recent_ten()
-                    )
+        userid = self.loggedUser()
+        if not userid:
+            self.redirect("/blog/signup")
+        else:
+            self.render("Home.html", 
+                        posts = data_model.BlogPosts.recent_ten()
+                        )
 
 # Create new post
 class NewPost(Handler):
@@ -229,17 +233,46 @@ class Logout(Handler):
 
 class Comment(Handler):
     def get(self, postId):
-        self.write(postId)
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            post = data_model.BlogPosts.get_post(postId = postId)
+            user = data_model.User.get_user_by_id(int(postId))
+            comments = data_model.Comments.get_post_comments(post = post)
+            self.render("comments.html",
+                        post = post,
+                        comments = comments)
+
+    def post(self, postId):
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            post = data_model.BlogPosts.get_post(postId = postId)
+            user = data_model.User.get_user_by_id(int(userid))
+            comment_text = self.request.get('comment')
+            data_model.Comments.put_post_comments(post = post,
+                                                  user = user,
+                                                  comment_text = comment_text)
+            self.redirect("/blog")
+
+
 
 class Like(Handler):
     def get(self, postId):
-        post = data_model.BlogPosts.get_post(postId = postId)
-        user = post.created_by
-        if data_model.Likes.check_if_liked(post = post,user = user) > 0:
-            self.write('already liked')
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
         else:
-            data_model.Likes.put_liked_user(post = post, user = user)
-            self.write('thank you')
+            post = data_model.BlogPosts.get_post(postId = postId)
+            # user = post.created_by
+            user = data_model.User.get_user_by_id(int(postId))
+            if data_model.Likes.check_if_liked(post = post,user = user) > 0:
+                self.write('already liked')
+            else:
+                data_model.Likes.put_liked_user(post = post, user = user)
+                self.write('thank you')
 
 app = webapp2.WSGIApplication([
                               ( '/', MainPage),

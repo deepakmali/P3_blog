@@ -1,0 +1,51 @@
+{% extends "BasePage.html" %}
+{% block content %}
+
+<div class="row">
+	<div class="col-md-9">
+		<h2>{{post.subject}}</h2>
+	</div>
+	<div class="col-md-3 , text-right text-bottom">
+		<p>{{post.created}}</p>
+	</div>
+</div>
+<div class="row"><div class="col-md-12"><hr></div></div>
+<div class="row">
+	<div class="col-md-12">
+		<p>{{post.content}}</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12 text-right">
+			<p><h3>By : {{post.created_by.username}} </h3></p>
+	</div>	
+</div>
+<form method="post">
+    <div class="form-group">
+        <label for="comt">New Comment:</label>
+        <textarea class="form-control" name="comment" id="comt" style="height: 100px;">{{content}}</textarea>
+        <p>{{comment_error}}</p>
+    </div>
+    <div class="form-group text-right">
+        <input class="btn btn-default" type="submit" name="Create Post">    
+    </div>
+</form>
+<div class="row">
+	<div class="col-md-12">
+		<h3>User Comments:</h3>
+	</div>
+</div>
+<!-- Displaying comments for this post -->
+{% for comment in comments %}
+<div class="row text-left text-uppercase">
+	<div class="col-md-12">
+		<h4>{{ comment.user.username }}</h4>
+	</div>
+</div>
+<div class="row text-left">
+	<div class="col-md-12">
+		{{ comment.comment_text }}
+	</div>
+</div>
+{% endfor %}
+{% endblock %}
