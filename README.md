@@ -19,7 +19,7 @@ This is the third project in the curriculam.
 * In your machine, navigate to the directory where the files are downloaded.
 * Initialise the gcloud. More information [here](https://cloud.google.com/sdk/gcloud/reference/init)
 * Deploy the cloud to gcloud. More information [here](https://cloud.google.com/sdk/gcloud/reference/app/deploy)
-* Deploy command gives url to access the application via internet.
+* Deploy command gives url to access the application via Internet.
 * Copy the url and open in Browser.
 * Now you are good to use the blog.
 * Create user, create posts, comment, like and do other operations.
@@ -28,3 +28,5 @@ This is the third project in the curriculam.
 * 3 Methods to render a jinja template were taken from 'Intro to Backend' course in Udacity.
 * Few test posts were taken from Wikepedia.
 * README.md format is taken from [jxon](https://gist.github.com/jxson/1784669)
+* Few hurdles were overcome using the Udacity discussion forum.
+* Last but not least, few confusions were resolved by [stack overflow](stackoverflow.com/)
