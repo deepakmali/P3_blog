@@ -24,6 +24,9 @@
 	<div class="col-md-1 text-left">
 		<p><a href="/blog/mypage/{{post.key().id()}}">Edit</a></p>
 	</div>
+	<div class="col-md-1 text-left">
+		<p><a href="/blog/mypage/del-{{post.key().id()}}">Delete</a>
+	</div>
 	<div class="col-md-1">
 		<p>
 		<a href="/blog/like-{{post.key().id()}}">
@@ -38,7 +41,7 @@
 		({{post.total_comments}})
 		</a></p>
 	</div>
-	<div class="col-md-9 text-right">
+	<div class="col-md-8 text-right">
 		<p>By : {{post.created_by.username}}</p>
 	</div>
 </div>

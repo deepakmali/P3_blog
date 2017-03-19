@@ -283,6 +283,12 @@ class Like(Handler):
             self.render("likes.html",
                         like_response = like_response)
 
+class DeletePost(Handler):
+    def get(self, postId):
+        post = data_model.BlogPosts.get_post(int(postId))
+        post.delete()
+        self.redirect("/blog/mypage")
+
 app = webapp2.WSGIApplication([
                               ( '/', MainPage),
                               ( '/blog', BlogHome),
@@ -291,6 +297,7 @@ app = webapp2.WSGIApplication([
                               ( '/blog/login', Login),
                               ( '/blog/mypage', MyPage),
                               ( r'/blog/mypage/(\d+)', EditPost),
+                              ( r'/blog/mypage/del-(\d+)', DeletePost),
                               ( '/blog/logout', Logout),
                               ( r'/blog/comment-(\d+)', Comment),
                               ( r'/blog/like-(\d+)', Like),
