@@ -23,6 +23,7 @@ def validate_cookie_hash(user_hash):
     if user_hash == create_cookie_hash(userid = userid):
         return userid
 
+# Helper method to render the page 
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
         self.response.write(*a, **kw)
@@ -34,6 +35,7 @@ class Handler(webapp2.RequestHandler):
     def render(self, template, **kw):
         self.write((self.render_str(template, **kw)))
 
+    # To check if an user is logged in.
     def loggedUser(self):
         user_hash = str(self.request.cookies.get('userid'))
         userid = validate_cookie_hash(user_hash)
@@ -47,12 +49,14 @@ class MainPage(Handler):
     def get(self):
         self.render("MainPage.html")
 
+# Display 10 most recent posts.
 class BlogHome(Handler):
     def get(self):
         self.render("Home.html", 
                     posts = data_model.BlogPosts.recent_ten()
                     )
 
+# Create new post
 class NewPost(Handler):
     def get(self):
         userid = self.loggedUser()
@@ -89,7 +93,7 @@ class NewPost(Handler):
                             subject_error=subject_error, 
                             content_error=content_error)
 
-
+# Handling signup process.
 class Signup(Handler):
     def get(self):
         userid = self.loggedUser()
@@ -142,6 +146,7 @@ class Signup(Handler):
                                          email = email)
             self.redirect('/blog/login')
 
+# Handle login process
 class Login(Handler):
     def get(self):
         userid = self.loggedUser()
@@ -150,7 +155,6 @@ class Login(Handler):
         else:
             self.redirect('/blog/mypage')
         
-
     def post(self):
         username = self.request.get('username')
         password = self.request.get('password')
@@ -175,6 +179,7 @@ class Login(Handler):
                 self.render("login.html",
                             empty_password="Password is incorrect.")
 
+# Disply user's blogs
 class MyPage(Handler):
     def get(self):
         userid = self.loggedUser()
@@ -187,6 +192,7 @@ class MyPage(Handler):
                     posts = posts
                     )
 
+# Option to udpate existing post
 class EditPost(Handler):
     def get(self, postId):
         userid = self.loggedUser()
@@ -209,6 +215,7 @@ class EditPost(Handler):
             post.put()
             self.redirect('/blog/mypage')
 
+# Logging out user and un-setting the cookie.
 class Logout(Handler):
     def get(self):
         userid = self.loggedUser()
@@ -220,6 +227,20 @@ class Logout(Handler):
             #time.sleep(5)
             #self.redirect('/blog/login')
 
+class Comment(Handler):
+    def get(self, postId):
+        self.write(postId)
+
+class Like(Handler):
+    def get(self, postId):
+        post = data_model.BlogPosts.get_post(postId = postId)
+        user = post.created_by
+        if data_model.Likes.check_if_liked(post = post,user = user) > 0:
+            self.write('already liked')
+        else:
+            data_model.Likes.put_liked_user(post = post, user = user)
+            self.write('thank you')
+
 app = webapp2.WSGIApplication([
                               ( '/', MainPage),
                               ( '/blog', BlogHome),
@@ -229,5 +250,7 @@ app = webapp2.WSGIApplication([
                               ( '/blog/mypage', MyPage),
                               ( r'/blog/mypage/(\d+)', EditPost),
                               ( '/blog/logout', Logout),
+                              ( r'/blog/comment-(\d+)', Comment),
+                              ( r'/blog/like-(\d+)', Like),
                               ] , 
                               debug = True)

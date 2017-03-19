@@ -111,9 +111,12 @@ class Likes(db.Model):
     @classmethod
     def put_liked_user(cls, post, user):
         if post and user :
-            cls(post = post,
-                user = user).put()
+            obj = Likes(post = post, user = user)
+            obj.put()
+            post.increment_like_count()
+            # cls(post = post,
+            #     user = user).put()
 
     @classmethod
     def check_if_liked(cls, post, user):
-        return cls.all().filter('post =', post).filter('user =', user)
+        return cls.all().filter('post =', post).filter('user =', user).count()
