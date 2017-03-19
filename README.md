@@ -24,6 +24,11 @@ This is the third project in the curriculam.
 * Now you are good to use the blog.
 * Create user, create posts, comment, like and do other operations.
 * Link to my blog is [here](https://myblog-161307.appspot.com)
+* To run in local:
+	* Navigate to the downloaded folder where the ```app.yaml``` file exists
+	* Open terminal/command prompt in the current folder.
+	* Run ```dev_app_server . ``` 
+	* Open ```localhost:8080``` in any browser.
 
 # Credits
 * 3 Methods to render a jinja template were taken from 'Intro to Backend' course in Udacity.
@@ -31,3 +36,4 @@ This is the third project in the curriculam.
 * README.md format is taken from [jxon](https://gist.github.com/jxson/1784669)
 * Few hurdles were overcome using the Udacity discussion forum.
 * Last but not least, few confusions were resolved by [stack overflow](stackoverflow.com/)
+* Few bugs like user were fixed and the i would like to thank Udacity reviewers for pointing out the bugs.
