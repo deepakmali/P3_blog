@@ -296,6 +296,19 @@ class DeleteComment(Handler):
         comment.delete()
         self.redirect("/blog/comment-" + str(postId))
 
+class EditComment(Handler):
+    def get(self, commentId):
+        comment = data_model.Comments.get_comment(int(commentId))
+        self.render("commentEdit.html",
+                    comment_text = comment.comment_text)
+    def post(self, commentId):
+        comment = data_model.Comments.get_comment(int(commentId))
+        comment_text = self.request.get('comment_text')
+        comment.comment_text = comment_text
+        comment.put()
+        postId = data_model.Comments.get_postId(int(commentId))
+        self.redirect("/blog/comment-" + str(postId))
+
 app = webapp2.WSGIApplication([
                               ( '/', MainPage),
                               ( '/blog', BlogHome),
@@ -308,6 +321,7 @@ app = webapp2.WSGIApplication([
                               ( '/blog/logout', Logout),
                               ( r'/blog/comment-(\d+)', Comment),
                               ( r'/blog/mypage/delcomm-(\d+)', DeleteComment),
+                              ( r'/blog/mypage/edit-(\d+)', EditComment),
                               ( r'/blog/like-(\d+)', Like),
                               ] , 
                               debug = True)
