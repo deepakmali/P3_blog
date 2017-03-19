@@ -232,10 +232,16 @@ class EditPost(Handler):
             self.render("signup.html")
         else:
             post = data_model.BlogPosts.get_post(postId=int(postId))
-            post.subject = self.request.get('subject')
-            post.content = self.request.get('content')
-            post.put()
-            self.redirect('/blog/mypage')
+            if int(post.created_by.key().id()) == int(userid):
+                post.subject = self.request.get('subject')
+                post.content = self.request.get('content')
+                post.put()
+                self.redirect('/blog/mypage')
+            else:
+                self.render("NewPost.html",
+                            not_owner="""Editing is not allowed on 
+                            other user's posts"""
+                            )
 
 
 # Logging out user and un-setting the cookie.
