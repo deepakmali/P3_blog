@@ -1,49 +1,49 @@
 {% extends "BasePage.html" %}
 {% block content %}
 <div class="row">
-	<div class="col-md-12 text-uppercase text-center">
-		<h1>My Blog</h1>
-	</div>
+    <div class="col-md-12 text-uppercase text-center">
+        <h1>My Blog</h1>
+    </div>
 </div>
 {% for post in posts %}
 <div class="row">
-	<div class="col-md-9">
-		<h2>{{post.subject}}</h2>
-	</div>
-	<div class="col-md-3 , text-right text-bottom">
-		<p>{{post.created}}</p>
-	</div>
+    <div class="col-md-9">
+        <h2>{{post.subject}}</h2>
+    </div>
+    <div class="col-md-3 , text-right text-bottom">
+        <p>{{post.created}}</p>
+    </div>
 </div>
 <div class="row"><div class="col-md-12"><hr></div></div>
 <div class="row">
-	<div class="col-md-12">
-		<p>{{post.content}}</p>
-	</div>
+    <div class="col-md-12">
+        <p>{{post.content}}</p>
+    </div>
 </div>
 <div class="row">
-	<div class="col-md-1 text-left">
-		<p><a href="/blog/mypage/{{post.key().id()}}">Edit</a></p>
-	</div>
-	<div class="col-md-1 text-left">
-		<p><a href="/blog/mypage/del-{{post.key().id()}}">Delete</a></p>
-	</div>
-	<div class="col-md-1">
-		<p>
-		<a href="/blog/like-{{post.key().id()}}">
- 		 	<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-			({{post.total_likes}})
-		</a></p>
-	</div>
-	<div class="col-md-1">
-		<p>
-		<a href="/blog/comment-{{post.key().id()}}">
-		<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-		({{post.total_comments}})
-		</a></p>
-	</div>
-	<div class="col-md-8 text-right">
-		<p>By : {{post.created_by.username}}</p>
-	</div>
+    <div class="col-md-1 text-left">
+        <p><a href="/blog/mypage/{{post.key().id()}}">Edit</a></p>
+    </div>
+    <div class="col-md-1 text-left">
+        <p><a href="/blog/mypage/del-{{post.key().id()}}">Delete</a></p>
+    </div>
+    <div class="col-md-1">
+        <p>
+        <a href="/blog/like-{{post.key().id()}}">
+            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+            ({{post.total_likes}})
+        </a></p>
+    </div>
+    <div class="col-md-1">
+        <p>
+        <a href="/blog/comment-{{post.key().id()}}">
+        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+        ({{post.total_comments}})
+        </a></p>
+    </div>
+    <div class="col-md-8 text-right">
+        <p>By : {{post.created_by.username}}</p>
+    </div>
 </div>
 {% endfor %}
 {% endblock %}

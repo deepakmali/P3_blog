@@ -1,25 +1,25 @@
 {% extends "BasePage.html" %}
 {% block content %}
 <div class="row">
-	<form method="post">
-		<div class="form-group">
-			<label for="userN">Username: </label>
-			<input class="form-control" type="text" name="username" placeholder="Enter your username here" id="userN">
-			<label>{{ empty_username }}</label>
-		</div>
-		<div class="form-group">
-			<label for="pswrd">Password: </label>
-			<input class="form-control" type="Password" name="password" placeholder="Enter your password here" id="pswrd">
-			<label>{{ empty_password }}</label>
-		</div>
-		<div class="form-group">
-			<input class="btn btn-default" type="submit" name="submit">
-		</div>
-	</form>
+    <form method="post">
+        <div class="form-group">
+            <label for="userN">Username: </label>
+            <input class="form-control" type="text" name="username" placeholder="Enter your username here" id="userN">
+            <label>{{ empty_username }}</label>
+        </div>
+        <div class="form-group">
+            <label for="pswrd">Password: </label>
+            <input class="form-control" type="Password" name="password" placeholder="Enter your password here" id="pswrd">
+            <label>{{ empty_password }}</label>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-default" type="submit" name="submit">
+        </div>
+    </form>
 </div>
 <div class="row">
-	<div class="col-md-12">
-		<p>If you already do not have an account, Please signup <a href="/blog/signup">here</a></p>
-	</div>
+    <div class="col-md-12">
+        <p>If you already do not have an account, Please signup <a href="/blog/signup">here</a></p>
+    </div>
 </div>
 {% endblock %}

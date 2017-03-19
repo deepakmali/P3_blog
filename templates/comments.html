@@ -2,23 +2,23 @@
 {% block content %}
 
 <div class="row">
-	<div class="col-md-9">
-		<h2>{{post.subject}}</h2>
-	</div>
-	<div class="col-md-3 , text-right text-bottom">
-		<p>{{post.created}}</p>
-	</div>
+    <div class="col-md-9">
+        <h2>{{post.subject}}</h2>
+    </div>
+    <div class="col-md-3 , text-right text-bottom">
+        <p>{{post.created}}</p>
+    </div>
 </div>
 <div class="row"><div class="col-md-12"><hr></div></div>
 <div class="row">
-	<div class="col-md-12">
-		<p>{{post.content}}</p>
-	</div>
+    <div class="col-md-12">
+        <p>{{post.content}}</p>
+    </div>
 </div>
 <div class="row">
-	<div class="col-md-12 text-right">
-			<p><h3>By : {{post.created_by.username}} </h3></p>
-	</div>	
+    <div class="col-md-12 text-right">
+            <p><h3>By : {{post.created_by.username}} </h3></p>
+    </div>  
 </div>
 <form method="post">
     <div class="form-group">
@@ -31,29 +31,29 @@
     </div>
 </form>
 <div class="row">
-	<div class="col-md-12">
-		<h3>User Comments:</h3>
-	</div>
+    <div class="col-md-12">
+        <h3>User Comments:</h3>
+    </div>
 </div>
 <!-- Displaying comments for this post -->
 {% for comment in comments %}
 <div class="row text-left text-uppercase">
-	<div class="col-md-12">
-		<h4>{{ comment.user.username }}</h4>
-	</div>
+    <div class="col-md-12">
+        <h4>{{ comment.user.username }}</h4>
+    </div>
 </div>
 <div class="row text-left">
-	<div class="col-md-12">
-		{{ comment.comment_text }}
-	</div>
+    <div class="col-md-12">
+        {{ comment.comment_text }}
+    </div>
 </div>
 <div class="row">
-	<div class="col-md-1 text-left">
-		<p><a href="/blog/mypage/edit-{{comment.key().id()}}">Edit</a></p>
-	</div>
-	<div class="col-md-1 text-left">
-		<p><a href="/blog/mypage/delcomm-{{comment.key().id()}}">Delete</a></p>
-	</div>
+    <div class="col-md-1 text-left">
+        <p><a href="/blog/mypage/edit-{{comment.key().id()}}">Edit</a></p>
+    </div>
+    <div class="col-md-1 text-left">
+        <p><a href="/blog/mypage/delcomm-{{comment.key().id()}}">Delete</a></p>
+    </div>
 </div>
 {% endfor %}
 {% endblock %}
