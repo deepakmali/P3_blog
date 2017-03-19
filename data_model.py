@@ -102,6 +102,15 @@ class Comments(db.Model):
                            comment_text = comment_text)
             obj.put()
             post.increment_comment_count()
+
+    @classmethod
+    def get_comment(cls, commentId):
+        return cls.get_by_id(int(commentId))
+
+    @classmethod
+    def get_postId(cls, commentId):
+        comment = cls.get_comment(commentId)
+        return comment.post.key().id()
         
 # Store the likes on posts
 class Likes(db.Model):

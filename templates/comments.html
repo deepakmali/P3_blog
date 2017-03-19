@@ -47,5 +47,13 @@
 		{{ comment.comment_text }}
 	</div>
 </div>
+<div class="row">
+	<div class="col-md-1 text-left">
+		<p><a href="/blog/mypage/del-{{comment.key().id()}}">Edit</a></p>
+	</div>
+	<div class="col-md-1 text-left">
+		<p><a href="/blog/mypage/delcomm-{{comment.key().id()}}">Delete</a></p>
+	</div>
+</div>
 {% endfor %}
 {% endblock %}

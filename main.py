@@ -289,6 +289,13 @@ class DeletePost(Handler):
         post.delete()
         self.redirect("/blog/mypage")
 
+class DeleteComment(Handler):
+    def get(self, commentId):
+        comment = data_model.Comments.get_comment(int(commentId))
+        postId = data_model.Comments.get_postId(int(commentId))
+        comment.delete()
+        self.redirect("/blog/comment-" + str(postId))
+
 app = webapp2.WSGIApplication([
                               ( '/', MainPage),
                               ( '/blog', BlogHome),
@@ -300,6 +307,7 @@ app = webapp2.WSGIApplication([
                               ( r'/blog/mypage/del-(\d+)', DeletePost),
                               ( '/blog/logout', Logout),
                               ( r'/blog/comment-(\d+)', Comment),
+                              ( r'/blog/mypage/delcomm-(\d+)', DeleteComment),
                               ( r'/blog/like-(\d+)', Like),
                               ] , 
                               debug = True)
