@@ -23,6 +23,7 @@ This is the third project in the curriculam.
 * Copy the url and open in Browser.
 * Now you are good to use the blog.
 * Create user, create posts, comment, like and do other operations.
+* Link to my blog is [here](https://myblog-161307.appspot.com)
 
 # Credits
 * 3 Methods to render a jinja template were taken from 'Intro to Backend' course in Udacity.
