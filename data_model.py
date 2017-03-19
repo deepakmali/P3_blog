@@ -17,6 +17,7 @@ def make_pw_hash(username, password, salt=None):
                       hashlib.sha256(username + password + salt).hexdigest())
 
 
+# Check if the password is valid
 def valid_password(username, password, password_hash):
     salt = password_hash.split('|')[0]
     return password_hash == make_pw_hash(username, password, salt)
@@ -103,6 +104,7 @@ class Comments(db.Model):
         if post:
             return cls.all().filter('post =', post)
 
+    # storing new comments
     @classmethod
     def put_post_comments(cls, post, user, comment_text):
         if post and user and comment_text:
@@ -116,6 +118,7 @@ class Comments(db.Model):
     def get_comment(cls, commentId):
         return cls.get_by_id(int(commentId))
 
+    # Get post id of comment
     @classmethod
     def get_postId(cls, commentId):
         comment = cls.get_comment(commentId)
@@ -131,11 +134,9 @@ class Likes(db.Model):
     def put_liked_user(cls, post, user):
         if post and user:
             cls(post=post, user=user).put()
-            # obj.put()
             post.increment_like_count()
-            # cls(post = post,
-            #     user = user).put()
 
+    # Checking if user has already liked the post
     @classmethod
     def check_if_liked(cls, post, user):
         return cls.all().filter('post =', post).filter('user =', user).count()
