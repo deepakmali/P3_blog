@@ -58,10 +58,14 @@ class BlogHome(Handler):
         if not userid:
             self.redirect("/blog/signup")
         else:
-            self.render("Home.html",
-                        posts=data_model.BlogPosts.recent_ten()
-                        )
-
+            posts=data_model.BlogPosts.recent_ten()
+            if len(posts) > 0:
+                self.render("Home.html",
+                            posts=posts
+                            )
+            else:
+                self.render("Home.html",
+                            empty=True)
 
 # Create new post
 class NewPost(Handler):
@@ -91,6 +95,7 @@ class NewPost(Handler):
                                                  content=content,
                         created_by=data_model.User.get_user_by_id(int(userid)))  # NOQA
                 key = new_entry.put()
+                self.redirect("/blog")
             else:
                 self.render("NewPost.html",
                             subject=subject,
@@ -197,9 +202,15 @@ class MyPage(Handler):
         else:
             user = data_model.User.get_user_by_id(int(userid))
             posts = data_model.BlogPosts.user_posts(user=user)
-            self.render("mypage.html",
-                        posts=posts
-                        )
+            posts_count = posts.count()
+            if posts_count > 0:
+                self.render("mypage.html",
+                            posts=posts
+                            )
+            else:
+                self.render("mypage.html",
+                            empty=True
+                            )
 
 
 # Option to udpate existing post
