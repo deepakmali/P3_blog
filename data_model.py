@@ -25,6 +25,7 @@ def valid_password(username, password, password_hash):
 
 # To store user details.
 class User(db.Model):
+    """Used to store registered User details."""
     username = db.StringProperty(required=True)
     password_hash = db.StringProperty(required=True)
     email = db.StringProperty()
@@ -58,6 +59,7 @@ class User(db.Model):
 
 # To store blog posts
 class BlogPosts(db.Model):
+    """Used to store posts created by registered users."""
     subject = db.StringProperty(required=True)
     content = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
@@ -95,6 +97,7 @@ class BlogPosts(db.Model):
 
 # To store comments on posts
 class Comments(db.Model):
+    """Used to store comment's to user's posts."""
     post = db.ReferenceProperty(BlogPosts)
     user = db.ReferenceProperty(User)
     comment_text = db.TextProperty(required=True)
@@ -127,6 +130,7 @@ class Comments(db.Model):
 
 # Store the likes on posts
 class Likes(db.Model):
+    """Used to store which user liked which post."""
     post = db.ReferenceProperty(BlogPosts)
     user = db.ReferenceProperty(User)
 
