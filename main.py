@@ -258,9 +258,11 @@ class Comment(Handler):
             post = data_model.BlogPosts.get_post(postId=postId)
             user = data_model.User.get_user_by_id(int(postId))
             comments = data_model.Comments.get_post_comments(post=post)
+            loggedUser = data_model.User.get_user_by_id(int(userid))
             self.render("comments.html",
                         post=post,
-                        comments=comments
+                        comments=comments,
+                        loggedUser=loggedUser
                         )
 
     def post(self, postId):

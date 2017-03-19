@@ -1,30 +1,39 @@
 {% extends "BasePage.html" %}
 {% block content %}
 <div class="row">
-    <div class="col-md-12 text-center text-upper">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 text-center text-upper">
         <h1>Create a new post:</h1>        
     </div>
+    <div class="col-md-2"></div>
 </div>
 <div class="row">
-<form method="post">
-    <div class="form-group">
-        <label for="subj">Subject:</label>
-        <input class="form-control" type="text" name="subject" value="{{subject}}" id="subj">
-        <p>{{subject_error}}</p>
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <form method="post">
+            <div class="form-group">
+                <label for="subj">Subject:</label>
+                <input class="form-control" type="text" name="subject" value="{{subject}}" id="subj">
+                <p>{{subject_error}}</p>
+            </div>
+            <div class="form-group">
+                <label for="cont">Content:</label>
+                <textarea class="form-control" name="content" id="cont" style="height: 200px;">{{content}}</textarea>
+                <p>{{content_error}}</p>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-default" type="submit" name="Create Post">    
+            </div>
+        </form>   
     </div>
-    <div class="form-group">
-        <label for="cont">Content:</label>
-        <textarea class="form-control" name="content" id="cont" style="height: 200px;">{{content}}</textarea>
-        <p>{{content_error}}</p>
-    </div>
-    <div class="form-group">
-        <input class="btn btn-default" type="submit" name="Create Post">    
-    </div>
-</form>      
+    <div class="col-md-2"></div>
+</div>   
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
         <p>To cancel editing and go back to list of posts by you, <a href="/blog/mypage">click here.</a></p>
     </div>
+    <div class="col-md-2"></div>
 </div> 
 </div>
 {% endblock %}
