@@ -294,6 +294,8 @@ class DeleteComment(Handler):
         comment = data_model.Comments.get_comment(int(commentId))
         postId = data_model.Comments.get_postId(int(commentId))
         comment.delete()
+        post = data_model.BlogPosts.get_post(int(postId))
+        post.decrement_like_count()
         self.redirect("/blog/comment-" + str(postId))
 
 class EditComment(Handler):

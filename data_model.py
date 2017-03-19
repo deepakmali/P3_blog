@@ -83,6 +83,10 @@ class BlogPosts(db.Model):
         self.total_likes += 1
         self.put()
 
+    def decrement_like_count(self):
+        self.total_comments -= 1
+        self.put()
+
 # To store comments on posts
 class Comments(db.Model):
     post = db.ReferenceProperty(BlogPosts)
