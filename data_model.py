@@ -74,14 +74,14 @@ class BlogPosts(db.Model):
         return cls.all().filter('created_by =', user)
 
     # Incrementing the comment count
-    def increment_comment_count(cls):
-        cls.total_comments += 1
-        cls.put()
+    def increment_comment_count(self):
+        self.total_comments += 1
+        self.put()
 
     # Incrementing the likes count
-    def increment_like_count(cls):
-        cls.total_likes += 1
-        cls.put()
+    def increment_like_count(self):
+        self.total_likes += 1
+        self.put()
 
 # To store comments on posts
 class Comments(db.Model):
@@ -111,8 +111,8 @@ class Likes(db.Model):
     @classmethod
     def put_liked_user(cls, post, user):
         if post and user :
-            obj = Likes(post = post, user = user)
-            obj.put()
+            cls(post = post, user = user).put()
+            # obj.put()
             post.increment_like_count()
             # cls(post = post,
             #     user = user).put()

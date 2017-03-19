@@ -267,12 +267,21 @@ class Like(Handler):
         else:
             post = data_model.BlogPosts.get_post(postId = postId)
             # user = post.created_by
-            user = data_model.User.get_user_by_id(int(postId))
-            if data_model.Likes.check_if_liked(post = post,user = user) > 0:
-                self.write('already liked')
+            user = data_model.User.get_user_by_id(int(userid))
+            if user.username == post.created_by.username:
+                like_response = """Sorry! Owner of the post is not allowed to 
+                                like his own post!! <br>
+                                We are glad that you like your post though ;) """
+            elif data_model.Likes.check_if_liked(post = post,user = user) > 0:
+                like_response = """
+                        We know this post is <i>liking-multiple-times</i> good
+                        <br> But sorry!! We don't allow multiple likes :(
+                        """
             else:
                 data_model.Likes.put_liked_user(post = post, user = user)
-                self.write('thank you')
+                like_response = """Thank you for liking the post :)"""
+            self.render("likes.html",
+                        like_response = like_response)
 
 app = webapp2.WSGIApplication([
                               ( '/', MainPage),
