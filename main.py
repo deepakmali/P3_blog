@@ -314,34 +314,64 @@ class Like(Handler):
 
 class DeletePost(Handler):
     def get(self, postId):
-        post = data_model.BlogPosts.get_post(int(postId))
-        post.delete()
-        self.redirect("/blog/mypage")
-
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            post = data_model.BlogPosts.get_post(int(postId))
+            if int(post.created_by.key().id()) == int(userid):
+                post.delete()
+                self.redirect("/blog/mypage")
+            else:
+                self.redirect("/blog/mypage")
 
 class DeleteComment(Handler):
     def get(self, commentId):
-        comment = data_model.Comments.get_comment(int(commentId))
-        postId = data_model.Comments.get_postId(int(commentId))
-        comment.delete()
-        post = data_model.BlogPosts.get_post(int(postId))
-        post.decrement_like_count()
-        self.redirect("/blog/comment-" + str(postId))
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            comment = data_model.Comments.get_comment(int(commentId))
+            if comment:
+                postId = data_model.Comments.get_postId(int(commentId))
+            else:
+                self.redirect("/blog/mypage")
+            if comment and postId:
+                if int(comment.user.key().id()) == int(userid):
+                    comment.delete()
+                    post = data_model.BlogPosts.get_post(int(postId))
+                    post.decrement_like_count()
+                    self.redirect("/blog/comment-" + str(postId))
+                else:
+                    self.redirect("/blog/mypage")
+            else:
+                self.redirect("/blog/mypage")
 
 
 class EditComment(Handler):
     def get(self, commentId):
-        comment = data_model.Comments.get_comment(int(commentId))
-        self.render("commentEdit.html",
-                    comment_text=comment.comment_text)
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            comment = data_model.Comments.get_comment(int(commentId))
+            self.render("commentEdit.html",
+                        comment_text=comment.comment_text)
 
     def post(self, commentId):
-        comment = data_model.Comments.get_comment(int(commentId))
-        comment_text = self.request.get('comment_text')
-        comment.comment_text = comment_text
-        comment.put()
-        postId = data_model.Comments.get_postId(int(commentId))
-        self.redirect("/blog/comment-" + str(postId))
+        userid = self.loggedUser()
+        if not userid:
+            self.render("signup.html")
+        else:
+            comment = data_model.Comments.get_comment(int(commentId))
+            if comment and (int(comment.user.key().id()) == int(userid)):
+                comment_text = self.request.get('comment_text')
+                comment.comment_text = comment_text
+                comment.put()
+                postId = data_model.Comments.get_postId(int(commentId))
+                self.redirect("/blog/comment-" + str(postId))
+            else:
+                self.redirect("/blog/mypage")
 
 
 app = webapp2.WSGIApplication([
